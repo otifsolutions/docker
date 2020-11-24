@@ -149,6 +149,13 @@ RUN echo | tee -a /etc/skel/.bashrc >> /etc/bash.bashrc \
 RUN groupadd -g $APPLICATION_GROUP_ID $APPLICATION_GROUP \
     && useradd -m -s /bin/bash -u $APPLICATION_USER_ID -g $APPLICATION_GROUP $APPLICATION_USER
 
+# SSL CERTIFICATE FOR HTTPS
+
+RUN mkdir /etc/apache2/ssl \
+    && openssl req -new -newkey rsa:4096 -days 3650 -nodes -x509 -subj \
+    "/C=PK/ST=PUNJAB/L=LAHORE/O=OTIF Solutions/CN=localhost" \
+    -keyout /etc/apache2/ssl/ssl.key -out /etc/apache2/ssl/ssl.crt
+
 WORKDIR ${APP_ROOT}
 
 ENTRYPOINT ["/bin/init_container.sh"]
