@@ -1,4 +1,4 @@
-FROM php:8.0.1-apache
+FROM php:8.1.2-apache
 
 # Environment variables
 ENV APACHE_RUN_USER www-data
@@ -9,8 +9,8 @@ ENV APPLICATION_USER "application"
 ENV APPLICATION_USER_ID "1000"
 ENV APPLICATION_GROUP "application"
 ENV APPLICATION_GROUP_ID "1000"
-ENV NODE_VERSION=14.15.4
-ENV NVM_VERSION=v0.37.2
+ENV NODE_VERSION=16.14.0
+ENV NVM_VERSION=v0.39.1
 ENV NVM_DIR=/usr/local/nvm
 ENV PATH ${PATH}:${APP_ROOT}/bin:${APP_ROOT}/scripts:${APP_ROOT}/app
 
@@ -61,8 +61,6 @@ RUN ln -s /usr/lib/x86_64-linux-gnu/libldap.so /usr/lib/libldap.so \
     && ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pecl install mcrypt
-RUN docker-php-ext-enable mcrypt
 RUN pecl install xdebug
 RUN docker-php-ext-enable xdebug
 
@@ -87,9 +85,10 @@ RUN docker-php-ext-install gd \
     xml \
     simplexml \
     exif \
-    sockets \
     soap \
     sysvsem
+#add sockets to above command after 8.1.3 this bellow command is a workaround to an open issue with php 8.1.2
+RUN CFLAGS="$CFLAGS -D_GNU_SOURCE" docker-php-ext-install sockets
 RUN make-ssl-cert generate-default-snakeoil
 
 COPY ./docker/etc/motd /etc/motd
