@@ -1,4 +1,4 @@
-FROM php:8.1.2-apache
+FROM php:8.3.7-apache
 
 # Environment variables
 ENV APACHE_RUN_USER www-data
@@ -9,8 +9,8 @@ ENV APPLICATION_USER "application"
 ENV APPLICATION_USER_ID "1000"
 ENV APPLICATION_GROUP "application"
 ENV APPLICATION_GROUP_ID "1000"
-ENV NODE_VERSION=16.14.0
-ENV NVM_VERSION=v0.39.1
+ENV NODE_VERSION=20.14.0
+ENV NVM_VERSION=v0.39.7
 ENV NVM_DIR=/usr/local/nvm
 ENV PATH ${PATH}:${APP_ROOT}/bin:${APP_ROOT}/scripts:${APP_ROOT}/app
 
@@ -39,7 +39,7 @@ RUN apt-get install -y --no-install-recommends \
         libssl-dev \
         openssh-server \
         ca-certificates \
-        python2.7 \
+        python3 \
         git \
         vim \
         nano \
@@ -55,7 +55,7 @@ RUN apt-get install -y --no-install-recommends \
         postgresql-client \
         ssl-cert \
         cron
-RUN update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 RUN ln -s /usr/lib/x86_64-linux-gnu/libldap.so /usr/lib/libldap.so \
     && ln -s /usr/lib/x86_64-linux-gnu/liblber.so /usr/lib/liblber.so \
     && ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h \
