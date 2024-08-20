@@ -1,4 +1,4 @@
-FROM php:8.1.2-apache
+FROM php:8.2-apache
 
 # Environment variables
 ENV APACHE_RUN_USER www-data
@@ -39,7 +39,6 @@ RUN apt-get install -y --no-install-recommends \
         libssl-dev \
         openssh-server \
         ca-certificates \
-        python2.7 \
         git \
         vim \
         nano \
@@ -55,7 +54,6 @@ RUN apt-get install -y --no-install-recommends \
         postgresql-client \
         ssl-cert \
         cron
-RUN update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1
 RUN ln -s /usr/lib/x86_64-linux-gnu/libldap.so /usr/lib/libldap.so \
     && ln -s /usr/lib/x86_64-linux-gnu/liblber.so /usr/lib/liblber.so \
     && ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h \
